@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Secret Valentine 💗</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb);
+  font-family:'Segoe UI',sans-serif;
+  overflow:hidden;
+}
+.card{
+  background:#fff;
+  padding:30px;
+  border-radius:22px;
+  width:90%;
+  max-width:480px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+h2{color:#ff4d6d}
+input{
+  padding:12px;
+  width:80%;
+  border-radius:20px;
+  border:1px solid #ddd;
+  font-size:16px;
+  text-align:center;
+}
+button{
+  padding:12px 26px;
+  font-size:16px;
+  border-radius:30px;
+  border:none;
+  margin:10px;
+  cursor:pointer;
+}
+.yes{background:#ff4d6d;color:#fff}
+.no{background:#eee}
+img{
+  width:85%;
+  max-width:300px;
+  border-radius:20px;
+  margin:15px 0;
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+.hearts{
+  font-size:48px;
+  animation:pop .8s infinite alternate;
+}
+@keyframes pop{
+  from{transform:scale(1)}
+  to{transform:scale(1.4)}
+}
+.gift{
+  font-size:90px;
+  cursor:pointer;
+  animation:bounce 1s infinite;
+}
+@keyframes bounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
+
+/* LETTER DESIGN */
+.letter-wrapper{
+  position:relative;
+  padding:15px;
+}
+.letter-paper{
+  background:#fffdf7;
+  padding:30px;
+  border-radius:16px;
+  border:3px solid #ffb6c1;
+  box-shadow:0 15px 30px rgba(0,0,0,.25);
+  font-size:16px;
+  line-height:1.8;
+  text-align:left;
+  position:relative;
+  z-index:2;
+}
+.decorations{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  font-size:26px;
+}
+.decorations span{
+  position:absolute;
+  animation:float 6s infinite ease-in-out;
+}
+@keyframes float{
+  0%{transform:translateY(0);opacity:1}
+  50%{transform:translateY(-15px);opacity:.8}
+  100%{transform:translateY(0);opacity:1}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h2>🔒 Only my sunshine can enter 💗</h2>
+  <input type="password" id="pwd" placeholder="Enter secret password 🙈">
+  <br><br>
+  <button class="yes" onclick="checkPwd()">Unlock 💕</button>
+  <p id="msg"></p>
+</div>
+
+<script>
+const PASSWORD="PuppyGippu";
+let stage="start";
+let yesOnce=false;
+let noCount=0;
+
+function checkPwd(){
+  if(pwd.value===PASSWORD){
+    card.innerHTML=`
+      <h2>ready for my proposal?🫣</h2>
+      <img src="valgift.JPEG"
+         style="
+           width: 85%;
+           max-width: 300px;
+           border-radius: 20px;
+           margin: 15px 0;
+           box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+         ">
+      <button class="yes" onclick="start()">Yes 💕</button>
+    `;
+  }else{
+    msg.innerText="ooppss,the password is incorrect😗";
+    msg.style.color="#ff4d6d";
+  }
+}
+
+function start(){
+  stage="start";yesOnce=false;noCount=0;
+  card.innerHTML=`
+    <h2 id="q">Will you be my valentine?🫣</h2>
+    <div id="btns">
+      <button class="yes" id="yesBtn" onclick="yes()">Yes 💕</button>
+      <button class="no" id="noBtn" onclick="no()">No 🙈</button>
+    </div>
+  `;
+}
+
+function yes(){
+  const q=document.getElementById("q");
+  const btns=document.getElementById("btns");
+
+  if(stage==="start"){
+    yesOnce=true;
+    stage="imperfections";
+    q.innerText="Are you Sure? I have many Imperfections!👀";
+  }
+  else if(stage==="imperfections"){
+    stage="tolerate";
+    q.innerText="So you’re ready to tolerate me forever,Right?😗👉🏻👈🏻";
+  }
+  else if(stage==="tolerate"){
+    showLove();
+  }
+  else if(stage==="guilt"){
+    stage="forced";
+    q.innerText="How dare you?There is no escape for you now…so be my valentine😡🔪";
+    btns.innerHTML=`<button class="yes" onclick="showLove()">okey😶</button>`;
+  }
+}
+
+function no(){
+  const q=document.getElementById("q");
+  const yesBtn=document.getElementById("yesBtn");
+  const noBtn=document.getElementById("noBtn");
+
+  if(yesOnce){
+    stage="guilt";
+    q.innerText="So you’re going to give up on me that easily?😔";
+    btns.innerHTML=`<button class="yes" onclick="yes()">Yes 😬</button>`;
+    return;
+  }
+
+  noCount++;
+  if(noCount===1){
+    q.innerText="pleaseee…I will be a gud boyfriend😭🙏🏼";
+    yesBtn.style.transform="scale(1.3)";
+  }
+  else if(noCount===2){
+    q.innerText="Angana parayalleee…Be my valentineee😭🙏🏼";
+    yesBtn.style.transform="scale(1.6)";
+  }
+  else{
+    q.innerText="You have no other choice…hehee😈";
+    noBtn.onmouseenter=()=>{
+      noBtn.style.position="fixed";
+      noBtn.style.left=Math.random()*80+"%";
+      noBtn.style.top=Math.random()*80+"%";
+    };
+  }
+}
+
+function showLove(){
+  card.innerHTML=`
+    <div class="hearts">💗💖💘💞💓</div>
+    <h2>yeeaahhhhh…I love youuuu myyyy sunshineee🥹💗</h2>
+    <button class="yes" onclick="gift()">Next ➜</button>
+  `;
+}
+
+function gift(){
+  card.innerHTML=`
+    <h2>Unwrap it🙈</h2>
+    <div class="gift" onclick="letter()">🎁</div>
+  `;
+}
+
+function letter(){
+  card.innerHTML=`
+    <div class="letter-wrapper">
+
+      <div class="decorations">
+        <span style="top:5%;left:10%;">💐</span>
+        <span style="top:12%;right:12%;">🌸</span>
+        <span style="bottom:15%;left:15%;">🍬</span>
+        <span style="bottom:18%;right:18%;">💖</span>
+        <span style="top:50%;left:3%;">🌹</span>
+        <span style="top:60%;right:3%;">🍭</span>
+      </div>
+
+      <div class="letter-paper">
+        This is for my love,mehabbb☺️💗 It’s been almost 1 year since you started tolerating me, I jzt want to say a couple of things to you…First of all, as you have broke boyfriend, you won’t be getting any gifts or date in the upcoming valentines day. I’m sorryy about that but I hope this will make you a little happy. I jzt want to thank you for loving me and being on my side all this time,understanding me and caring me when I need you the most. I knew I did many mistakes and hurted you over and over many times,but I love you with all my heart and I could never lose you no matter what! So even I said something stupidly, I can’t have a happy life without you and thus,I won’t leave you no matter what! Please be on my side forever and tolerate me till I take my last breath….🫠🫂 Your lovely sweetly Gibson☺️💋
+      </div>
+
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
